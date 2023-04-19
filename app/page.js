@@ -4,21 +4,32 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "./page.module.css";
 import { getWeather, getCurrency } from "@/utils/features";
+import { data } from "../data";
+import Weather from "@/components/Weather";
 const inter = Inter({ subsets: ["latin"] });
 
 const Home = async () => {
-  const city = "pune";
-  const symbol = "INR";
+  const city = "india";
+  let countrys = data;
+
+  const filtered = countrys.filter(
+    (i) => i.name.toLowerCase() == city.toLowerCase()
+  );
+  let code = filtered[0]?.currency.code;
+
+  const symbol = code;
+
   const weather = await getWeather(city);
   const currency = await getCurrency(symbol);
-  // console.log(weather, "weather");
+
+  // console.log(code);
+  // console.log(weather.forecast, "weather");
   // console.log(currency, "currency");
+
   return (
     <>
-      <h1> hello</h1>
-      <p className="mx-16 my-16 text-xl font-bold text-green-600 cursor-pointer">
-        Configure Tailwind CSS with Next.JS
-      </p>
+      Home Page
+      <Weather data={weather} />
     </>
   );
 };
